@@ -1,5 +1,5 @@
 function [] = Import_Files()
-    dataFolder = 'C:/Users/r99955dd/Dropbox (The University of Manchester)/BolandGroup shared workspace/Data Files/Cd3As2/RoomTempSpectra/FluenceRepeat';
+    dataFolder = 'path/to/folder';
     [position,T_raw,dT_raw,num_files] = loadFiles(dataFolder);
     
     fluence = [100 75 50 25 10 5 2.5 1];
@@ -18,8 +18,8 @@ function [] = Import_Files()
 
     fill_factor = 0.33;
     thickness = 100e-9*(pi/4.0);
-    material = 'CdAs';
-    [m_eff,~,epsilon] = Material_Parameters(material);
+    material = '[insert material name here]';
+    [m_eff,~,epsilon] = Material_Parameters(material); % material gets passed into a module titled Material_Parameters where m_eff and epsilon reside
     conductivity_full = zeros(L,num_files);
     for j = 1:num_files
         conductivity_full(:,j) = NW_conductivity(Frequency',dTonT(:,j),fill_factor,thickness,epsilon);
@@ -31,9 +31,8 @@ function [] = Import_Files()
     range = f_thz>0.01 & f_thz<3.0;
     f_restrained = f_thz(range);
     cond_restrained = conductivity_full(range,1:num_files);
-
-%     Plot_FluenceDependence_3D(fluence,f_restrained,cond_restrained)
     
+    % Save your files to matlab format
     save('all_Data','f_thz','conductivity_full','f_restrained','cond_restrained','weight','m_eff','epsilon')
     
 end
@@ -61,6 +60,11 @@ function [position,T,dT,num_files] = loadFiles(myFolder)
         fullFileName = fullfile(theFiles(i).folder, baseFileName);
         data{i} = dlmread(fullFileName,'\t',1,0);
         all_data = data{i};
+        
+        % The following lines of codes assume that
+        % Column 1 = position of your motorized stage as you scan through
+        % Column 2 = amplitude of terahertz pulse without photoexcitation (T)
+        % Column 3 = amplitude of the change of the terahertz pulse with photoexcitation (delta T or dT)
         position(:,i) = all_data(:,1);
         T(:,i) = all_data(:,2);
         dT(:,i) = all_data(:,3);
