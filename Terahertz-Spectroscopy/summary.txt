@@ -1,1 +1,4 @@
-This folder contains some functions that I have used over the course of my DPhil and Postdoctoral positions to analyse data files in relation to Optical-Pump Terahertz Probe Spectroscopy.
+This folder contains some functions that I have used over the course of my DPhil and Postdoctoral positions
+to analyse data files in relation to Optical-Pump Terahertz Probe Spectroscopy.
+
+I hope some people will eventually find this repo useful. Feel free to adapt the codes to your needs.
